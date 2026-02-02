@@ -1111,6 +1111,9 @@ function MaestroConsoleInner() {
 						},
 					],
 					activeTabId: defaultTabId,
+					filePreviewTabs: [],
+					activeFileTabId: null,
+					unifiedTabOrder: [{ type: 'ai' as const, id: defaultTabId }],
 				};
 			}
 
@@ -1235,6 +1238,12 @@ function MaestroConsoleInner() {
 					agentError: undefined,
 					agentErrorPaused: false,
 					closedTabHistory: [], // Runtime-only, reset on load
+					// File preview tabs - initialize from persisted data or empty
+					filePreviewTabs: correctedSession.filePreviewTabs || [],
+					activeFileTabId: correctedSession.activeFileTabId ?? null,
+					unifiedTabOrder:
+						correctedSession.unifiedTabOrder ||
+						resetAiTabs.map((tab) => ({ type: 'ai' as const, id: tab.id })),
 				};
 			} else {
 				// Process spawn failed
@@ -1652,6 +1661,9 @@ function MaestroConsoleInner() {
 							aiTabs: [initialTab],
 							activeTabId: initialTabId,
 							closedTabHistory: [],
+							filePreviewTabs: [],
+							activeFileTabId: null,
+							unifiedTabOrder: [{ type: 'ai' as const, id: initialTabId }],
 							customPath: parentSession.customPath,
 							customArgs: parentSession.customArgs,
 							customEnvVars: parentSession.customEnvVars,
@@ -7249,6 +7261,9 @@ You are taking over this conversation. Based on the context above, provide a bri
 				aiTabs: [initialTab],
 				activeTabId: initialTabId,
 				closedTabHistory: [],
+				filePreviewTabs: [],
+				activeFileTabId: null,
+				unifiedTabOrder: [{ type: 'ai' as const, id: initialTabId }],
 				customPath: parentSession.customPath,
 				customArgs: parentSession.customArgs,
 				customEnvVars: parentSession.customEnvVars,
@@ -7430,6 +7445,9 @@ You are taking over this conversation. Based on the context above, provide a bri
 								aiTabs: [initialTab],
 								activeTabId: initialTabId,
 								closedTabHistory: [],
+								filePreviewTabs: [],
+								activeFileTabId: null,
+								unifiedTabOrder: [{ type: 'ai' as const, id: initialTabId }],
 								customPath: session.customPath,
 								customArgs: session.customArgs,
 								customEnvVars: session.customEnvVars,
@@ -8718,6 +8736,10 @@ You are taking over this conversation. Based on the context above, provide a bri
 				aiTabs: [initialTab],
 				activeTabId: initialTabId,
 				closedTabHistory: [],
+				// File preview tabs - start empty, unified tab order starts with initial AI tab
+				filePreviewTabs: [],
+				activeFileTabId: null,
+				unifiedTabOrder: [{ type: 'ai' as const, id: initialTabId }],
 				// Nudge message - appended to every interactive user message
 				nudgeMessage,
 				// Per-agent config (path, args, env vars, model)
@@ -8884,6 +8906,9 @@ You are taking over this conversation. Based on the context above, provide a bri
 				aiTabs: [initialTab],
 				activeTabId: initialTabId,
 				closedTabHistory: [],
+				filePreviewTabs: [],
+				activeFileTabId: null,
+				unifiedTabOrder: [{ type: 'ai' as const, id: initialTabId }],
 				// Auto Run configuration from wizard
 				autoRunFolderPath,
 				autoRunSelectedFile,
@@ -10920,6 +10945,9 @@ You are taking over this conversation. Based on the context above, provide a bri
 							aiTabs: [initialTab],
 							activeTabId: initialTabId,
 							closedTabHistory: [],
+							filePreviewTabs: [],
+							activeFileTabId: null,
+							unifiedTabOrder: [{ type: 'ai' as const, id: initialTabId }],
 							customPath: activeSession.customPath,
 							customArgs: activeSession.customArgs,
 							customEnvVars: activeSession.customEnvVars,
@@ -11095,6 +11123,9 @@ You are taking over this conversation. Based on the context above, provide a bri
 					aiTabs: [initialTab],
 					activeTabId: initialTabId,
 					closedTabHistory: [],
+					filePreviewTabs: [],
+					activeFileTabId: null,
+					unifiedTabOrder: [{ type: 'ai' as const, id: initialTabId }],
 					customPath: activeSession.customPath,
 					customArgs: activeSession.customArgs,
 					customEnvVars: activeSession.customEnvVars,
@@ -11244,6 +11275,9 @@ You are taking over this conversation. Based on the context above, provide a bri
 				aiTabs: [initialTab],
 				activeTabId: initialTabId,
 				closedTabHistory: [],
+				filePreviewTabs: [],
+				activeFileTabId: null,
+				unifiedTabOrder: [{ type: 'ai' as const, id: initialTabId }],
 				customPath: createWorktreeSession.customPath,
 				customArgs: createWorktreeSession.customArgs,
 				customEnvVars: createWorktreeSession.customEnvVars,
@@ -13177,6 +13211,9 @@ You are taking over this conversation. Based on the context above, provide a bri
 							aiTabs: [initialTab],
 							activeTabId: initialTabId,
 							closedTabHistory: [],
+							filePreviewTabs: [],
+							activeFileTabId: null,
+							unifiedTabOrder: [{ type: 'ai' as const, id: initialTabId }],
 							// Custom agent config
 							customPath: data.customPath,
 							customArgs: data.customArgs,
