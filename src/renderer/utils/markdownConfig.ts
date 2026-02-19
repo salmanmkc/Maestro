@@ -141,10 +141,11 @@ export function generateProseStyles(options: ProseStylesOptions): string {
     ${s} ol { list-style-type: decimal; }
     ${compactSpacing ? `${s} li ul, ${s} li ol { margin: 0 !important; padding-left: 1.5em; list-style-position: outside; }` : ''}
     ${s} li { margin: ${compactSpacing ? '0' : '0.25em 0'} !important; ${compactSpacing ? 'padding: 0;' : ''} line-height: 1.4; display: list-item; }
-    ${s} ol li { padding-left: 0.15em; }
-    ${s} li > p { margin: 0 !important; display: inline; vertical-align: baseline; line-height: inherit; }
-    ${s} li > p + ul, ${s} li > p + ol { margin-top: 0 !important; }
-    ${s} li > p > strong:first-child, ${s} li > p > b:first-child, ${s} li > p > em:first-child, ${s} li > p > code:first-child, ${s} li > p > a:first-child { vertical-align: baseline; line-height: inherit; }
+	    ${s} ol li { padding-left: 0.15em; }
+	    ${s} li > p:first-child { margin: 0 !important; display: inline; vertical-align: baseline; line-height: inherit; }
+	    ${s} li > p:not(:first-child) { display: block; margin: 0.5em 0 0 !important; }
+	    ${s} li > p:first-child + ul, ${s} li > p:first-child + ol { margin-top: 0 !important; }
+	    ${s} li > p:first-child > strong:first-child, ${s} li > p:first-child > b:first-child, ${s} li > p:first-child > em:first-child, ${s} li > p:first-child > code:first-child, ${s} li > p:first-child > a:first-child { vertical-align: baseline; line-height: inherit; }
     ${s} li::marker { color: ${colors.textMain}; }
     ${s} ol li::marker { font-variant-numeric: tabular-nums; font-weight: 400; }
     ${s} li:has(> input[type="checkbox"]) { list-style: none; margin-left: -1.5em; }
@@ -493,7 +494,7 @@ export function generateInlineWizardPreviewProseStyles(
 	variant: InlineWizardPreviewVariant
 ): string {
 	const c = theme.colors;
-	const s = `${scopeSelector} .prose`;
+	const s = scopeSelector ? `${scopeSelector}.prose, ${scopeSelector} .prose` : '.prose';
 	const isStreaming = variant === 'streaming';
 
 	const heading1Size = isStreaming ? '1.75em' : '2em';
@@ -752,8 +753,9 @@ export function generateTerminalProseStyles(theme: Theme, scopeSelector: string)
     ${s} > ul, ${s} > ol { color: ${c.textMain}; margin: 0.25em 0 !important; padding-left: 2em; list-style-position: outside; }
     ${s} li ul, ${s} li ol { margin: 0 !important; padding-left: 1.5em; list-style-position: outside; }
     ${s} li { margin: 0 !important; padding: 0; line-height: 1.4; display: list-item; }
-    ${s} li > p { margin: 0 !important; display: inline; vertical-align: baseline; line-height: inherit; }
-    ${s} li > p + ul, ${s} li > p + ol { margin-top: 0 !important; }
+    ${s} li > p:first-child { margin: 0 !important; display: inline; vertical-align: baseline; line-height: inherit; }
+    ${s} li > p:not(:first-child) { display: block; margin: 0.5em 0 0 !important; }
+    ${s} li > p:first-child + ul, ${s} li > p:first-child + ol { margin-top: 0 !important; }
     ${s} li:has(> input[type="checkbox"]) { list-style: none; margin-left: -1.5em; }
     ${s} code { background-color: ${c.bgSidebar}; color: ${c.textMain}; padding: 0.15em 0.3em; border-radius: 3px; font-size: 0.9em; }
     ${s} pre { background-color: ${c.bgSidebar}; color: ${c.textMain}; padding: 0.5em; border-radius: 6px; overflow-x: auto; margin: 0.35em 0 !important; }
@@ -767,7 +769,7 @@ export function generateTerminalProseStyles(theme: Theme, scopeSelector: string)
     ${s} strong { font-weight: bold; }
     ${s} em { font-style: italic; }
     ${s} li > strong:first-child, ${s} li > b:first-child, ${s} li > em:first-child, ${s} li > code:first-child, ${s} li > a:first-child,
-    ${s} li > p > strong:first-child, ${s} li > p > b:first-child, ${s} li > p > em:first-child, ${s} li > p > code:first-child, ${s} li > p > a:first-child { vertical-align: baseline; line-height: inherit; }
+    ${s} li > p:first-child > strong:first-child, ${s} li > p:first-child > b:first-child, ${s} li > p:first-child > em:first-child, ${s} li > p:first-child > code:first-child, ${s} li > p:first-child > a:first-child { vertical-align: baseline; line-height: inherit; }
     ${s} li::marker { font-weight: normal; }
   `;
 }
