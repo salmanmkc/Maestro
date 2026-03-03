@@ -279,7 +279,7 @@ export function GeneralTab({ theme, isOpen }: GeneralTabProps) {
 			<div>
 				<div className="block text-xs font-bold opacity-70 uppercase mb-1 flex items-center gap-2">
 					<User className="w-3 h-3" />
-					About Me
+					Conductor Profile (aka, About Me)
 				</div>
 				<p className="text-xs opacity-50 mb-2">
 					Tell us a little about yourself so that agents created under Maestro know how to work and

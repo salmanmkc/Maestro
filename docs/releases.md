@@ -13,6 +13,68 @@ Maestro can update itself automatically! This feature was introduced in **v0.8.7
 
 ---
 
+## v0.15.x - Maestro Symphony
+
+**Latest: v0.15.1** | Released March 3, 2026
+
+🎶 Maestro Symphony - Contribute to open source with AI assistance! Browse curated issues from projects with the `runmaestro.ai` label, clone repos with one click, and automatically process the relevant Auto Run playbooks. Track your contributions, streaks, and stats. You're contributing CPU and tokens towards your favorite open source projects and features. NOTE: Making changes here active based on user feedback 🙏
+
+🎬 Director's Notes. Aggregates history across all agents into a unified timeline with search, filters, and an activity graph. Includes an AI Overview tab that generates a structured synopsis of recent work. Off by default, gated behind a new "Encore Features" panel under settings. This is a precursor to an eventual plugin system. Allowing for extensions and customizations without bloating the core app.
+
+🏷️ Conductor Profile - Available under Settings > General. Provide a short description on how Maestro agents should interface with you.
+
+🧠 Three-State Thinking Toggle - The thinking toggle now cycles through three modes: off, on, and sticky. Sticky mode keeps thinking content visible after the response completes. Cycle with CMD/CTRL+SHIFT+K ⌨️ (#165).
+
+🤖 Factory.ai Droid Support - Added support for the [Factory.ai](https://factory.ai/product/cli) droid agent. Full session management and output parsing integration (#223).
+
+🔧 Windows and SSH Stability Improvements - Major fixes for remote agent execution including wizard support, synopsis generation, and proper shell profile sourcing across platforms. (#131, #156, #159, #187, #195).
+
+## Security Fixes
+
+Addressed some security issues, all thanks to @VVX7
+
+- #421 History panel stored XSS
+- #422 Stored XSS to reverse shell
+- #423 Stored XSS to SSRF
+
+## Smaller Changes in 0.15.x
+
+- Added safety controls around agent working directory deletion 🔒 (#206)
+- Added `/skills` command for enumerate Claude Code skills 🧰 (#154)
+- Renamed "Audio Notifications" to "Custom Notifications" 🔔 (#168)
+- Auto-scroll now respects user scroll position in AI mode 📜 (#237)
+- Spec-Kit and OpenSpec commands now accept arguments properly ⚙️ (#238)
+- You can now @ message entire groups of agents in Group Chat. 👥
+- Group chats can be archived. 📦
+- You can now swap the provider behind an agent. ↪️
+- Added ability to scroll to latest messages as they are streamed from the agent. 📜
+- Expanded maestro-cli to include agent message send on new or resumed sessions, this means you can control any agent behind Maestro easily 🧵
+- Added VSCode-style semantic icon mapping in the file explorer ✅
+- New tabs are automatically named by default, this can be disabled under settings 🏷️
+- Added WakaTime integration ⏱️
+- Added window chrome options to toggle off the header bar 🪟
+- Broke Settings > General up, there's now a Settings > Display ⚙️
+- Added a table of contents jump menu for markdown files being previewed 📄
+- Added option to open document preview from within the graph view 📈
+- Added configuration options to ignore remote file patterns over SSH connections 🚯
+- Fixed context consumption calculation bugs 🧮
+- AI responses can now be saved to markdown on disk 💾
+- Hide Empty "Ungrouped Agents" Folder 📁
+- File preview detects updates on disk and shows refresh button ↪️
+- Auto Run task calculation is now dynamic to count tasks added mid-flight ✈️
+- When you stop an Auto Run, you can now force kill the running task 🔪
+- Web interface synchronization improvements 🌐
+- Added shortcuts to all panel search under command palette 🔍
+- All sorts of other bug fixes and usability improvements 🐛
+- Enhanced batch runner with agent prompt validation for task references ☑️
+- Added recovery mechanism for expired group chat sessions automatically 🔄
+- Improved history help modal with SSH remote session limitations notice 📝
+- The wand glyph on the upper right sparkles if any agent is working ✨
+
+... and of course tons of other little fixes and creature comforts too numerous to enumerate here.
+
+---
+
 ## v0.14.x - Doc Graphs, SSH Agents, Inline Wizard
 
 **Latest: v0.14.5** | Released January 24, 2026

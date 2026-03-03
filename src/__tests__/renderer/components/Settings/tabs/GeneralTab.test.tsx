@@ -186,7 +186,7 @@ describe('GeneralTab', () => {
 				await vi.advanceTimersByTimeAsync(100);
 			});
 
-			expect(screen.getByText('About Me')).toBeInTheDocument();
+			expect(screen.getByText('Conductor Profile (aka, About Me)')).toBeInTheDocument();
 			expect(screen.getByText('Default Terminal Shell')).toBeInTheDocument();
 			expect(screen.getByText('System Log Level')).toBeInTheDocument();
 			expect(screen.getByText('GitHub CLI (gh) Path')).toBeInTheDocument();
