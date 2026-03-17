@@ -18,16 +18,17 @@ import {
 import type { ToolType } from '../../../shared/types';
 
 vi.mock('os', async () => {
-	const actual = await vi.importActual<typeof import('os')>('os');
-	const actualOs = 'default' in actual && actual.default ? actual.default : actual;
-	const mocked = {
-		...actualOs,
-		homedir: vi.fn(() => '/tmp/maestro-session-storage-home'),
-		tmpdir: vi.fn(() => '/tmp'),
-	};
+	// Use dynamic require to get the real os module as a plain object,
+	// since vi.importActual/importOriginal return empty module namespaces
+	// for Node.js built-ins in Vitest's SSR mode.
+	// eslint-disable-next-line @typescript-eslint/no-require-imports
+	const realOs = await import('node:os');
+	const homedirMock = vi.fn(() => '/tmp/maestro-session-storage-home');
+	const overrides = { homedir: homedirMock, tmpdir: realOs.tmpdir };
 	return {
-		...mocked,
-		default: mocked,
+		...realOs,
+		...overrides,
+		default: { ...realOs, ...overrides },
 	};
 });
 
@@ -452,6 +453,7 @@ describe('CodexSessionStorage SSH Remote Support', () => {
 		host: 'test-server.example.com',
 		port: 22,
 		username: 'testuser',
+		privateKeyPath: '',
 		useSshConfig: false,
 		enabled: true,
 	};
@@ -747,6 +749,7 @@ describe('CodexSessionStorage SSH Remote Support', () => {
 					host: 'remote.example.com',
 					port: 2222,
 					username: 'admin',
+					privateKeyPath: '',
 					useSshConfig: true,
 					enabled: true,
 				};
@@ -762,6 +765,7 @@ describe('CodexSessionStorage SSH Remote Support', () => {
 					host: 'host',
 					port: 22,
 					username: 'user',
+					privateKeyPath: '',
 					useSshConfig: false,
 					enabled: true,
 				};
@@ -792,6 +796,7 @@ describe('OpenCodeSessionStorage SSH Remote Support', () => {
 		host: 'test-server.example.com',
 		port: 22,
 		username: 'testuser',
+		privateKeyPath: '',
 		useSshConfig: false,
 		enabled: true,
 	};
@@ -1067,13 +1072,14 @@ describe('OpenCodeSessionStorage SSH Remote Support', () => {
 					host: 'remote.example.com',
 					port: 2222,
 					username: 'admin',
+					privateKeyPath: '',
 					useSshConfig: true,
 					enabled: true,
 				};
 
 				// Should work with full config
-				const path = storage.getSessionPath('/project', 'session-id', fullConfig);
-				expect(path).toBe('~/.local/share/opencode/storage/message/session-id');
+				const sessionPath = storage.getSessionPath('/project', 'session-id', fullConfig);
+				expect(sessionPath).toBe('~/.local/share/opencode/storage/message/session-id');
 
 				// Should work with minimal config
 				const minimalConfig = {
@@ -1082,11 +1088,12 @@ describe('OpenCodeSessionStorage SSH Remote Support', () => {
 					host: 'host',
 					port: 22,
 					username: 'user',
+					privateKeyPath: '',
 					useSshConfig: false,
 					enabled: true,
 				};
-				const pathMinimal = storage.getSessionPath('/project', 'session-id', minimalConfig);
-				expect(pathMinimal).toBe('~/.local/share/opencode/storage/message/session-id');
+				const minimalPath = storage.getSessionPath('/project', 'session-id', minimalConfig);
+				expect(minimalPath).toBe('~/.local/share/opencode/storage/message/session-id');
 			}
 		);
 	});
@@ -1100,6 +1107,7 @@ describe('FactoryDroidSessionStorage SSH Remote Support', () => {
 		host: 'test-server.example.com',
 		port: 22,
 		username: 'testuser',
+		privateKeyPath: '',
 		useSshConfig: false,
 		enabled: true,
 	};
@@ -1438,13 +1446,14 @@ describe('FactoryDroidSessionStorage SSH Remote Support', () => {
 					host: 'remote.example.com',
 					port: 2222,
 					username: 'admin',
+					privateKeyPath: '',
 					useSshConfig: true,
 					enabled: true,
 				};
 
 				// Should work with full config
-				const path = storage.getSessionPath('/project', 'session-id', fullConfig);
-				expect(path).toContain('~/.factory/sessions/');
+				const sessionPath = storage.getSessionPath('/project', 'session-id', fullConfig);
+				expect(sessionPath).toContain('~/.factory/sessions/');
 
 				// Should work with minimal config
 				const minimalConfig = {
@@ -1453,11 +1462,12 @@ describe('FactoryDroidSessionStorage SSH Remote Support', () => {
 					host: 'host',
 					port: 22,
 					username: 'user',
+					privateKeyPath: '',
 					useSshConfig: false,
 					enabled: true,
 				};
-				const pathMinimal = storage.getSessionPath('/project', 'session-id', minimalConfig);
-				expect(pathMinimal).toContain('~/.factory/sessions/');
+				const minimalPath = storage.getSessionPath('/project', 'session-id', minimalConfig);
+				expect(minimalPath).toContain('~/.factory/sessions/');
 			}
 		);
 	});
@@ -1536,6 +1546,7 @@ describe('SSH Config Integration Flow Verification', () => {
 		host: 'dev-server.internal.example.com',
 		port: 22,
 		username: 'developer',
+		privateKeyPath: '',
 		useSshConfig: true,
 		enabled: true,
 	};
@@ -1547,6 +1558,7 @@ describe('SSH Config Integration Flow Verification', () => {
 		host: '192.168.1.100',
 		port: 2222,
 		username: 'admin',
+		privateKeyPath: '',
 		useSshConfig: false,
 		enabled: true,
 	};
@@ -1804,6 +1816,7 @@ describe('SSH Config Integration Flow Verification', () => {
 				host: 'full.example.com',
 				port: 22,
 				username: 'fulluser',
+				privateKeyPath: '',
 				useSshConfig: true,
 				enabled: true,
 			};
@@ -1831,6 +1844,7 @@ describe('SSH Config Integration Flow Verification', () => {
 				host: 'min.example.com',
 				port: 22,
 				username: 'user',
+				privateKeyPath: '',
 				useSshConfig: false,
 				enabled: true,
 			};
